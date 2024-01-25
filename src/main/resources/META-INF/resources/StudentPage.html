@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <title>Page étudiant</title>
+        <style>
+            body {
+                margin: 0;
+                font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+                text-align: center;
+            }
+
+            table {
+                margin: 100px auto;
+                padding: 100px;
+                font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                border-spacing: 10px;
+            }
+
+            th {
+                border: 1px solid lightgrey;
+                padding: 0px 100px 0px 100px;
+            }
+
+            td {
+                border: 1px solid lightgrey;
+                padding: 0px 120px 0px 120px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Bienvenue</h1>
+        <table id="gradesTable">
+            <tr>
+                <th>Matières</th>
+                <th>Notes</th>
+            </tr>
+        </table>
+        <script>
+            async function gradesOfStudent() {
+                const data = new URLSearchParams(window.location.search);
+                const id = data.get('id');
+                const reponse = await fetch('http://localhost:8080/grades/grade/' + id, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (reponse.ok) {
+                    const dataGrades = await reponse.json();
+                    console.log(dataGrades);
+                    const table = document.getElementById('gradesTable');
+
+                    dataGrades.forEach(grade => {
+                        const tr = document.createElement('tr');
+                        const tdMatiere = document.createElement('td');
+                        tdMatiere.textContent = grade.coursValue;
+                        tr.appendChild(tdMatiere);
+                        const tdNote = document.createElement('td');
+                        tdNote.textContent = grade.grade;
+                        tr.appendChild(tdNote);
+                        table.appendChild(tr);
+                    });
+
+                } else {
+                    alert("Erreur d'id");
+                }
+            }
+            document.addEventListener('DOMContentLoaded', gradesOfStudent);
+        </script>
+    </body>
+</html>

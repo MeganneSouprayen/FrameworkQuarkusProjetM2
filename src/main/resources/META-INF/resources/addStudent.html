@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <title>Ajout Etudiant</title>
+        <style>
+            body {
+                margin: 0;
+                font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+                text-align: center;
+            }
+            table {
+                margin: 200px auto;
+                padding: 50px;
+                font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+                border:  1px solid lightgrey;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+            p {
+                padding: .15rem 0;
+                margin: 0;
+                line-height: 1.3rem;
+            }
+            a {
+                text-decoration: underline;
+                color: #1259A5;
+            }
+            a:hover, a:active { color: #c00; }
+        </style>
+    </head>
+    <body>
+        <h1>Formulaire pour ajouter un étudiant</h1>
+        <form id="addData" onsubmit="submitForm(event);">
+            <table>
+                <tr>
+                    <td><label for="name">Nom de l'étudiant</label></td>
+                    <td><input type="text" id="name" name="name" required/></td>
+                </tr>
+                <tr>
+                    <td><label for="password">password</label></td>
+                    <td><input type="text" id="password" name="password" required/></td>
+                </tr>
+            </table>
+            <button type="submit">Valider</button>
+        </form>
+        <script>
+            async function submitForm(event) {
+                event.preventDefault();
+
+                const data = new FormData(document.getElementById("addData"));
+                const reponse = await fetch('http://localhost:8080/person/new', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: data.get('name'),
+                        password: data.get('password'),
+                    }),
+                });
+
+                if (reponse.ok) {
+                    window.location.href = 'adminPage.html';                    
+                } else {
+                    alert("Erreur d'ajout d'étudiant")
+                }
+            }
+        </script>
+    </body>
+</html>

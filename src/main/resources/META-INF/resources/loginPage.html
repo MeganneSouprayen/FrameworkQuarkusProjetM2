@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <title>Page de Connexion</title>
+        <style>
+            body {
+                margin: 0;
+                font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+                text-align: center;
+            }
+            table {
+                margin: 200px auto;
+                padding: 50px;
+                font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+                border:  1px solid lightgrey;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+        </style>
+    </head>
+    <body>
+        <form id="loginData" onsubmit="submitForm(event)">
+            <table>
+                <tr>
+                    <td colspan="2"><h1>Connexion</h1></td>
+                </tr>
+                <tr>
+                    <td><label for="name">nom</label></td>
+                    <td><input type="text" id="name" name="name" required/></td>
+                </tr>
+                <tr>
+                    <td><label for="password">mot de passe</label></td>
+                    <td><input type="password" id="password" name="password" required/></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><button type="submit">s'identifier</button></td>
+                </tr>
+            </table>
+        </form>
+        <script>
+            async function submitForm(event) {
+                event.preventDefault();
+
+                const data = new FormData(document.getElementById("loginData"));
+                const reponse = await fetch('http://localhost:8080/person/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: data.get('name'),
+                        password: data.get('password'),
+                    }),
+                });
+
+                if (reponse.ok) {
+                    /*
+                    // c'est le jeton JWT reçut quand l'authentification est réussi
+                    const token = await reponse.text();
+                    document.cookie = `jwtToken=${token}; path=/;`;
+                    */
+                    const reponse1 = await fetch('http://localhost:8080/person/byName/' + data.get('name'), {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    });
+
+                    if (reponse1.ok) {
+                        const data1 = await reponse1.json();
+                        console.log(data1);
+                        if (data1.name == "admin") {
+                            window.location.href = 'adminPage.html';
+                        }
+                        else {
+                            window.location.href = 'StudentPage.html?id=' + data1.id;
+                        }
+                    }
+                    
+                } else {
+                    alert("Erreur d'authetification !")
+                }
+            }
+        </script>
+    </body>
+</html>
