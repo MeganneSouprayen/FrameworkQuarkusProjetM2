@@ -2,9 +2,11 @@ package org.acme;
 
 import java.util.List;
 
+import io.vertx.core.json.JsonObject;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -33,13 +35,27 @@ public class GradeResource {
         grade.persist();
     }
 
+    @POST
+    @Path("new")
+    @Transactional
+    public void addGrade(JsonObject user) {
+        Long idPerson = user.getLong("idPerson");
+        int coursValue = user.getInteger("coursValue");
+        float note = user.getFloat("note");
+        Grade grade = new Grade();
+        grade.idPerson = idPerson;
+        grade.coursValue = coursValue;
+        grade.note = note;
+        grade.persist();
+    }
+
     @PUT
     public void updateGrade(@PathParam("id") Long id, Grade grade) {
         Grade temp = Grade.findById(id);
         if (temp != null) {
             temp.idPerson = grade.idPerson;
             temp.coursValue = grade.coursValue;
-            temp.grade = grade.grade;
+            temp.note = grade.note;
         }
     }
 

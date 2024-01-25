@@ -8,6 +8,6 @@
 insert into person (id, name, password) values(100, 'admin', 'admin');
 insert into person (id, name, password) values(101, 'bob', '0000');
 insert into person (id, name, password) values(102, 'tom', '1111');
-insert into grade (id, idPerson, coursValue, grade) values(1, 101, 1, 10.0);
-insert into grade (id, idPerson, coursValue, grade) values(2, 101, 2, 14.0);
-insert into grade (id, idPerson, coursValue, grade) values(3, 102, 2, 13.0);
+insert into grade (id, idPerson, coursValue, note) values(1, 101, 1, 10.0);
+insert into grade (id, idPerson, coursValue, note) values(2, 101, 2, 14.0);
+insert into grade (id, idPerson, coursValue, note) values(3, 102, 2, 13.0);

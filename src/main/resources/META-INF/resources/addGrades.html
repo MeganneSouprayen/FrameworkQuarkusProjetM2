@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <title>Ajout Notes</title>
+        <style>
+            body {
+                margin: 0;
+                font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+                text-align: center;
+            }
+            table {
+                margin: 200px auto;
+                padding: 50px;
+                font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+                border:  1px solid lightgrey;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+            p {
+                padding: .15rem 0;
+                margin: 0;
+                line-height: 1.3rem;
+            }
+            a {
+                text-decoration: underline;
+                color: #1259A5;
+            }
+            a:hover, a:active { color: #c00; }
+        </style>
+    </head>
+    <body>
+        <h1>Formulaire pour ajouter une note</h1>
+        <form id="addData" onsubmit="submitForm(event);">
+            <table>
+                <tr>
+                    <td><label for="idstudent">Id de l'étudiant</label></td>
+                    <td><input type="number" id="idstudent" name="idstudent" required/></td>
+                </tr>
+                <tr>
+                    <td><label for="matière">id Matière</label></td>
+                    <td><input type="number" id="matière" name="matière" required/></td>
+                </tr>
+                <tr>
+                    <td><label for="note">Note</label></td>
+                    <td><input type="number" id="note" name="note" required/></td>
+                </tr>
+            </table>
+            <button type="submit">Valider</button>
+        </form>
+        <script>
+            async function submitForm(event) {
+                event.preventDefault();
+
+                const data = new FormData(document.getElementById("addData"));
+                const reponse = await fetch('http://localhost:8080/grades/new', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        idPerson: data.get('idPerson'),
+                        cours: data.get('cours'),
+                        note: data.get('note'),
+                    }),
+                });
+
+                if (reponse.ok) {
+                    window.location.href = 'adminPage.html';                    
+                } else {
+                    alert("Erreur d'ajout de note")
+                }
+            }
+        </script>
+    </body>
+</html>

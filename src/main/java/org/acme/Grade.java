@@ -9,5 +9,11 @@ import jakarta.persistence.Table;
 public class Grade extends PanacheEntity {
     public Long idPerson;
     public int coursValue;
-    public float grade;
+    public float note;
+    public Grade() {
+        super();
+        this.idPerson = (long) 1;
+        this.coursValue = 0;
+        this.note = 0;
+    }
 }
