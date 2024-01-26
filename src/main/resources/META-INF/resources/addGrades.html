@@ -36,16 +36,16 @@
         <form id="addData" onsubmit="submitForm(event);">
             <table>
                 <tr>
-                    <td><label for="idstudent">Id de l'étudiant</label></td>
-                    <td><input type="number" id="idstudent" name="idstudent" required/></td>
+                    <td><label for="idPerson">Id de l'étudiant</label></td>
+                    <td><input type="text" id="idPerson" name="idPerson" required/></td>
                 </tr>
                 <tr>
-                    <td><label for="matière">id Matière</label></td>
-                    <td><input type="number" id="matière" name="matière" required/></td>
+                    <td><label for="coursValue">id Matière</label></td>
+                    <td><input type="text" id="coursValue" name="coursValue" required/></td>
                 </tr>
                 <tr>
                     <td><label for="note">Note</label></td>
-                    <td><input type="number" id="note" name="note" required/></td>
+                    <td><input type="text" id="note" name="note" required/></td>
                 </tr>
             </table>
             <button type="submit">Valider</button>
@@ -61,13 +61,14 @@
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        idPerson: data.get('idPerson'),
-                        cours: data.get('cours'),
-                        note: data.get('note'),
+                        idPerson: parseInt(data.get('idPerson')),
+                        coursValue: parseInt(data.get('coursValue')),
+                        note: parseFloat(data.get('note')),
                     }),
                 });
 
                 if (reponse.ok) {
+                    console.log('Redirection successful');
                     window.location.href = 'adminPage.html';                    
                 } else {
                     alert("Erreur d'ajout de note")
